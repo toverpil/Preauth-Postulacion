@@ -1,22 +1,35 @@
-def find_subset_sum(M, N):
-    subset_array = []
+from random import randint
+
+
+def sum_numbers_and_compare(Numbers, Sum, Actual_index, Next_index, Length):
+    if (Numbers[Actual_index] + Numbers[Next_index]) == Sum:
+        return [Numbers[Actual_index], Numbers[Next_index]]
+
+    if Next_index == Length:
+        if Actual_index + 1 == Length:
+            return []
+        Actual_index += 1
+        Next_index = Actual_index + 1
+        return sum_numbers_and_compare(Numbers, Sum, Actual_index, Next_index, Length)
+
+    return sum_numbers_and_compare(Numbers, Sum, Actual_index, Next_index + 1, Length)
+
+
+def find_subset_sum(Numbers, Sum):
     try:
-        for first_index, first_number in enumerate(M):
-            for second_index, second_number in enumerate(M):
-                if first_index == second_index:
-                    continue
-                if (int(first_number) + int(second_number)) == int(N):
-                    subset_array.extend(
-                        [int(first_number), int(second_number)])
-                    return subset_array
-        return subset_array
+        Length = len(Numbers)
+        if Length == 1:
+            return []
+
+        return "Los numeros son {}".format(sum_numbers_and_compare(Numbers, int(Sum), 0, 1, Length - 1))
     except:
-        return subset_array
+        return []
 
 
-''' TODO: Datos para pruebas, deben ser retirados.
-expected_sum = '20'
-array_integer = [2, 10, 12, 8, 15, 20]
-subset_sum_N = find_subset_sum(array_integer, expected_sum)
+sum = 34
+numbers = []
+
+for number in range(1000000):
+    numbers.append(randint(-100, 100))
+subset_sum_N = find_subset_sum(numbers, sum)
 print(subset_sum_N)
-'''
